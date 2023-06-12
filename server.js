@@ -164,14 +164,18 @@ async function check_All_Utilities() {
       console.log(Date.now()-x)
       console.log("we have info?" + JSON.stringify(NGpayment) + " " + JSON.stringify(ESpayment) + " ")
       if(NGpayment !== undefined && ESpayment !== undefined) {
+        e.electric = ESpayment.id
+        e.gas = NGpayment.id
         await userInfo.findOneAndUpdate({usersID: e.usersID}, {$set: {electric: ESpayment.id, gas: NGpayment.id}}, {new: true})
         requestMoney(e.phoneNumber, NGpayment.balance + ESpayment.balance, e.roommatesNumbs)
       }
       else if (NGpayment !== undefined && ESpayment === undefined) {
+        e.gas = NGpayment.id
         await userInfo.findOneAndUpdate({usersID: e.usersID}, {$set: {gas: NGpayment.id}}, {new: true})
         requestMoney(e.phoneNumber, NGpayment.balance, e.roommatesNumbs)
       }
       else if (NGpayment === undefined && ESpayment !== undefined) {        
+        e.electric = ESpayment.id
         await userInfo.findOneAndUpdate({usersID: e.usersID}, {$set: {electric: ESpayment.id}}, {new: true})
         requestMoney(e.phoneNumber, ESpayment.balance, e.roommatesNumbs)
       }
