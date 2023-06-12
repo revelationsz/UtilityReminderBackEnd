@@ -96,14 +96,14 @@ router.post('/getGAuthToken', async function(req, res) {
                 toUpdate: false,
             })
         
-            // const newUserUtilityID = new currInfo({
-            //     usersID: email,
-            //     electric: '',
-            //     gas: '',
-            // })
+            const newUserUtilityID = new currInfo({
+                usersID: email,
+                electric: '',
+                gas: '',
+            })
         
             await newUser.save()
-            // await newUserUtilityID.save()
+            await newUserUtilityID.save()
             await newUserToken.save()
             res.send({data: data})
         }
