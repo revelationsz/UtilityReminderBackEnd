@@ -14,6 +14,7 @@ async function getEmailInfo(auth, Email_id) {
       format: 'raw'
     });
     const data = res.data
+    console.log(data)
     const paymentInfo = atob(data.raw.split('_')[2])
     const parsedInfo = paymentInfo.replace(/\s/g, ' ').split(" ")[47].replace(/\$/g, "")
     return parsedInfo  

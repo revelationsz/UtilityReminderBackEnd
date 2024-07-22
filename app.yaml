@@ -1,0 +1,13 @@
+runtime: nodejs20
+
+service: api
+
+handlers:
+  - url: /.*
+    script: server.js
+    secure: always
+
+automatic_scaling:
+  target_cpu_utilization: 0.6
+  max_instances: 8
+  min_instances: 1

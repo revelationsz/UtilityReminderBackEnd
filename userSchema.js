@@ -2,6 +2,7 @@ import mongoose from 'mongoose';
 
 const user = new mongoose.Schema({
     usersID: String,
+    email: String,
     name: String,
     phoneNumber: String,
     roommatesNumbs: Array,
@@ -9,6 +10,9 @@ const user = new mongoose.Schema({
     initialized: Boolean,
     toDelete: Boolean,
     toUpdate: Boolean,
+    electricProvider: String,
+    gasProvider: String,
+    roommateInfo: Array
 })
 
 const test = mongoose.model("User", user)
