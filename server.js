@@ -19,7 +19,7 @@ const corsOptions = {
   optionsSuccessStatus: 200 // some legacy browsers (IE11, various SmartTVs) choke on 204
 }
 
-mongoose.connect('mongodb://localhost:27017/UtilitiesAutoPaymentuse', { useNewUrlParser: true })
+// mongoose.connect('mongodb://localhost:27017/UtilitiesAutoPaymentuse', { useNewUrlParser: true })
 mongoose.connect(process.env.MONGO_CONNECT, { useNewUrlParser: true })
 .then(() => {
   const app = express();

@@ -98,13 +98,22 @@ router.post('/getGAuthToken', async function(req, res) {
                 toDelete: false,
                 toUpdate: false,
                 electricProvider: req.body.electricProvider,
-                gasProvider: req.body.gasProvider
+                gasProvider: req.body.gasProvider,
+                expoPushToken: req.body.expoPushToken
             })
         
             const newUserUtilityID = new currInfo({
                 usersID: userID,
                 electric: '',
                 gas: '',
+                currentGasPayment: '',
+                curentElectricPayment: '',
+                gasDate: '',
+                electricDate: '',
+                gasBillPaymentStatus: "",
+                electricBillPaymentStatus: "",
+                gasBillRequestStatus: "",
+                electricBillRequestStatus: ""  
             })
         
             await newUser.save();
@@ -278,13 +287,36 @@ router.post('/newEmails/:user', async (req, res) => {
     try{
         if(req.body.electric != null && req.body.gas != null){
             console.log("both")
-            resp = await currInfo.findOneAndUpdate({usersID: req.params.user}, {$set: {electric: req.body.electric, gas: req.body.gas}}, {new: true})
+            resp = await currInfo.findOneAndUpdate({usersID: req.params.user}, {$set: {
+                electric: req.body.electric, 
+                gas: req.body.gas,
+                currentGasPayment: req.body.currentGasPayment,
+                curentElectricPayment: req.body.curentElectricPayment,
+                gasDate: req.body.gasDate,
+                electricDate: req.body.electricDate,
+                gasBillPaymentStatus: req.body.gasBillPaymentStatus,
+                electricBillPaymentStatus: req.body.electricBillPaymentStatus,
+                gasBillRequestStatus: req.body.gasBillRequestStatus,
+                electricBillRequestStatus: req.body.electricBillRequestStatus
+            }}, {new: true})
         } else if (req.body.electric != null && req.body.gas == null){
             console.log("electric " + req.body.electric)
-            resp =  await currInfo.findOneAndUpdate({usersID: req.params.user}, {$set: {electric: req.body.electric}}, {new: true})
+            resp =  await currInfo.findOneAndUpdate({usersID: req.params.user}, {$set: {
+                electric: req.body.electric,
+                curentElectricPayment: req.body.curentElectricPayment,
+                electricDate: req.body.electricDate,
+                electricBillPaymentStatus: req.body.electricBillPaymentStatus,
+                electricBillRequestStatus: req.body.electricBillRequestStatus
+            }}, {new: true})
         } else if (req.body.electric == null && req.body.gas != null){
             console.log("gas")
-            resp =  await currInfo.findOneAndUpdate({usersID: req.params.user}, {$set: {gas: req.body.gas}}, {new: true})
+            resp =  await currInfo.findOneAndUpdate({usersID: req.params.user}, {$set: {
+                gas: req.body.gas,
+                currentGasPayment: req.body.currentGasPayment,
+                gasDate: req.body.gasDate,
+                gasBillPaymentStatus: req.body.gasBillPaymentStatus,
+                gasBillRequestStatus: req.body.gasBillRequestStatus,
+            }}, {new: true})
         }
         console.log(resp)
         res.send(resp)

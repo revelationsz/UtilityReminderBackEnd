@@ -12,7 +12,8 @@ const user = new mongoose.Schema({
     toUpdate: Boolean,
     electricProvider: String,
     gasProvider: String,
-    roommateInfo: Array
+    roommateInfo: Array,
+    expoPushToken: String
 })
 
 const test = mongoose.model("User", user)
