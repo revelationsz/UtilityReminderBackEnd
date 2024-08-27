@@ -155,7 +155,7 @@ router.get('/getUserInfo/:user', async (req, res) => {
 router.post('/roommateUpdate/:user', async (req, res) => {
     try{
         console.log(req.body.roommates)
-        const info = await User.findOneAndUpdate({usersID: req.params.user}, {roommatesNumbs: req.body.roommatesNumbs, roommatesNames: req.body.roommatesNames, toUpdate: true})
+        const info = await User.findOneAndUpdate({usersID: req.params.user}, {roommateInfo: req.body.roommateInfo, toUpdate: true})
         console.log(info)
         res.send(info)
     } catch {g
