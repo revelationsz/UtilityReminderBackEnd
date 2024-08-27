@@ -155,13 +155,38 @@ router.get('/getUserInfo/:user', async (req, res) => {
 router.post('/roommateUpdate/:user', async (req, res) => {
     try{
         console.log(req.body.roommates)
-        const info = await User.findOneAndUpdate({usersID: req.params.user}, {roommateInfo: req.body.roommateInfo, toUpdate: true})
+        const info = await User.findOneAndUpdate({usersID: req.params.user}, {roommatesArray: req.params.roommatesArray, toUpdate: true})
         console.log(info)
         res.send(info)
-    } catch {g
+    } catch {
         res.send(404)
     }
 })
+
+router.post('/updateGas/:user', async (req, res) => {
+    try{
+        console.log(req.body.roommates)
+        const info = await currInfo.findOneAndUpdate({usersID: req.params.user}, {gas: req.params.gas, toUpdate: true})
+        console.log(info)
+        res.send(info)
+    } catch {
+        res.send(404)
+    }
+})
+
+router.post('/updateElectric/:user', async (req, res) => {
+    try{
+        console.log(req.body.roommates)
+        const info = await currInfo.findOneAndUpdate({usersID: req.params.user}, {electric: req.params.electric, toUpdate: true})
+        console.log(info)
+        res.send(info)
+    } catch {
+        res.send(404)
+    }
+})
+
+
+/* Batch process endpoints */
 
 router.post('/test/:user', async function(req, res) {
     console.log(req.params.user)
@@ -188,68 +213,6 @@ router.get('/users', async (req, res) => {
     }
 })
 
-router.get('/usersToUpdate', async (req, res) => {
-    console.log("up"+ req.headers)
-
-    if(req.headers.authorization.split(' ')[1] != process.env.SERVICE_KEY) {
-        res.sendStatus(404)
-        return
-    }
-    
-    try{
-        const users = await User.find({toUpdate: true});
-        if(users.length > 0) {
-            users.forEach(async user =>{
-                await User.findOneAndUpdate({usersID: user.usersID}, {$set:{toUpdate: false}}, {new: true})
-            })
-            console.log(users)
-            res.send(users)
-        } else {
-            res.send("no new users")
-        }
-      
-    } catch(err){
-        res.send(err)
-    }
-})
-
-router.get('/usersToDelete', async (req, res) => {
-
-    console.log("del"+ req.headers)
-    if(req.headers.authorization.split(' ')[1] != process.env.SERVICE_KEY) {
-        res.sendStatus(404)
-        return
-    }
-
-    try{
-        const users = await User.find({toDelete: true});
-        if(users.length > 0) {
-            users.forEach(async user =>{
-              await User.findOneAndDelete({usersID: user.usersID})
-            })
-            console.log(users)
-            res.send(users)
-        } else {
-            res.send("no users to delete")
-        }
-    } catch(err){
-        res.send(err)
-    }
-})
-
-router.get('/findNewUsers', async (req, res) => {
-
-    if(req.headers.authorization.split(' ')[1] != process.env.SERVICE_KEY) {
-        res.sendStatus(404)
-        return
-    }
-    try{
-        const users = await User.find({initialized: false});
-        res.send(users)
-    } catch(err){
-        res.send(err)
-    }
-})
 
 router.get('/tokenInfo/:user', async (req, res) => {
 
@@ -353,6 +316,69 @@ router.get('/startALL/:user', async (req, res) => {
         console.log(userAuth + emailIds)
         // res.send(emailIds)
         res.send({userAuth: userAuth, emailIds: emailIds})
+    } catch(err){
+        res.send(err)
+    }
+})
+
+router.get('/usersToDelete', async (req, res) => {
+
+    console.log("del"+ req.headers)
+    if(req.headers.authorization.split(' ')[1] != process.env.SERVICE_KEY) {
+        res.sendStatus(404)
+        return
+    }
+
+    try{
+        const users = await User.find({toDelete: true});
+        if(users.length > 0) {
+            users.forEach(async user =>{
+              await User.findOneAndDelete({usersID: user.usersID})
+            })
+            console.log(users)
+            res.send(users)
+        } else {
+            res.send("no users to delete")
+        }
+    } catch(err){
+        res.send(err)
+    }
+})
+
+router.get('/findNewUsers', async (req, res) => {
+
+    if(req.headers.authorization.split(' ')[1] != process.env.SERVICE_KEY) {
+        res.sendStatus(404)
+        return
+    }
+    try{
+        const users = await User.find({initialized: false});
+        res.send(users)
+    } catch(err){
+        res.send(err)
+    }
+})
+
+router.get('/usersToUpdate', async (req, res) => {
+    console.log("up"+ req.headers)
+
+    if(req.headers.authorization.split(' ')[1] != process.env.SERVICE_KEY) {
+        res.sendStatus(404)
+        return
+    }
+    
+    try{
+        const users = await User.find({toUpdate: true});
+        if(users.length > 0) {
+            users.forEach(async user =>{
+                await User.findOneAndUpdate({usersID: user.usersID}, {$set:{toUpdate: false}}, {new: true})
+            })
+            console.log(users)
+            res.send(users)
+        } else {
+            res.send("no new users")
+        }
+      
     } catch(err){
         res.send(err)
     }
